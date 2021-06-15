@@ -28,6 +28,8 @@ class Forefront:
             'authorization': f"Bearer {self.key}"
         })
 
+        os.remove(path);
+
         if(res.status_code == 404):
             raise Exception('Endpoint is down!')
 
