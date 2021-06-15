@@ -1,6 +1,5 @@
 import numpy as np
 import requests
-from tempfile import TemporaryFile
 import tempfile
 import os
 import random
