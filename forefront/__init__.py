@@ -1,1 +1,1 @@
-from forefront.forefront import Forefront
+from forefront.forefront import Forefront, predict

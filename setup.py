@@ -3,18 +3,23 @@ from distutils.core import setup
 setup(
     name='forefront',
     packages=['forefront'],
-    version='0.1.2',
+    version='0.2.0',
     license='MIT',
     description='Official library for use with Forefront (tryforefront.com)',
     author='Forefront Technologies',
     author_email='pypi@tryforefront.com',
     url='https://github.com/TryForefront/forefront',
-    download_url='https://github.com/TryForefront/forefront/archive/refs/tags/0.1.2.tar.gz',
+    download_url='https://github.com/TryForefront/forefront/archive/refs/tags/0.1.3.tar.gz',
     keywords=['MACHINE LEARNING', 'DATA SCIENCE', 'ML', "TENSORFLOW"],
     install_requires=[
         'requests',
         'numpy',
     ],
+    extra_require={
+        'pytorch': 'forefront-pytorch',
+        'tensorflow': 'forefront-tensorflow',
+        'sklearn': 'forefront-sklearn'
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
