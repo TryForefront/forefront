@@ -9,7 +9,7 @@ setup(
     author='Forefront Technologies',
     author_email='pypi@tryforefront.com',
     url='https://github.com/TryForefront/forefront',
-    download_url='https://github.com/TryForefront/forefront/archive/refs/tags/0.1.3.tar.gz',
+    download_url='https://github.com/TryForefront/forefront/archive/refs/tags/0.2.0.tar.gz',
     keywords=['MACHINE LEARNING', 'DATA SCIENCE', 'ML', "TENSORFLOW"],
     install_requires=[
         'requests',
