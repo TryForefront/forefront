@@ -23,7 +23,7 @@ class API:
         self.key = key
         self.project_id = project_id
         self.organization_id = organization_id
-        self.base_endpoint = 'https://api.app.tryforefront.com/api'
+        self.base_endpoint = 'https://live-server.forefront.link/api'
 
 
         self.endpoints = {
