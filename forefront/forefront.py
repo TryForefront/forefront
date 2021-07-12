@@ -57,8 +57,7 @@ class Forefront:
     datasets: Datasets
 
     def __init__(self, init_token: str = ''):
-        Path(os.path.join(Path.home(), '.forefront')).mkdir(
-            parents=True, exist_ok=True)
+        self.ensure_all_forefront_dirs()
         self.state = State()
         token = self.state.get_token()
 
@@ -77,7 +76,6 @@ class Forefront:
 
         self.key = self.state.get_token()
         self.datasets = Datasets()
-
 
     @staticmethod
     def ensure_all_forefront_dirs():
