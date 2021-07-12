@@ -83,8 +83,12 @@ class State:
             return f.read()
 
     def get_default_dataset(self):
-        with open(self.upload_status, 'r') as f:
-            f.read().strip()
+        try:
+            with open(self.upload_status, 'r') as f:
+                f.read().strip()
+        except FileNotFoundError:
+            self.set_default_dataset('')
+            return ''
 
     def set_default_dataset(self, status: str):
         with open(self.upload_status, 'w') as f:

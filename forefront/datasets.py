@@ -144,7 +144,7 @@ class Datasets:
         Path(data_dir).mkdir(parents=True, exist_ok=True)
         Path(tar_dir).mkdir(parents=True, exist_ok=True)
 
-    def upload_dataloader(self, name, description, dataloader: Iterable[Tuple[np.ndarray]],
+    def upload(self, name, description, dataloader: Iterable[Tuple[np.ndarray]],
                           dataset: Optional[str] = None, upload_batch: Optional[int] = 32):
 
         self.reset_deta_folders()

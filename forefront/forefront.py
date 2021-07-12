@@ -78,6 +78,16 @@ class Forefront:
         self.key = self.state.get_token()
         self.datasets = Datasets()
 
+
+    @staticmethod
+    def ensure_all_forefront_dirs():
+        root_path = os.path.join(Path.home(), '.forefront')
+        Path(root_path).mkdir(parents=True, exist_ok=True)
+        Path(os.path.join(root_path, 'data')).mkdir(parents=True, exist_ok=True)
+        Path(os.path.join(root_path, 'tar')).mkdir(parents=True, exist_ok=True)
+        Path(os.path.join(root_path, 'upload')).mkdir(parents=True, exist_ok=True)
+
+
     def init(self, project_id: Optional[str] = None, project_name: Optional[str] = None,
              project_description: Optional[str] = None, organization_id: Optional[str] = None, ) -> NoReturn:
         if not isinstance(project_id, str) and not isinstance(project_name, str):
