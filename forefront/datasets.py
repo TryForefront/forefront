@@ -1,4 +1,4 @@
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from .api import API
 from .state import State
 import numpy as np
@@ -150,14 +150,14 @@ class Datasets:
         self.reset_deta_folders()
 
         if not dataset:
-            if self.default_dataset is not None:
-                dataset = self.default_dataset
-                print('Dataset not specified, using default dataset')
-            else:
-                self.list_datasets()
-                inputted_dataset = input('Dataset not specified.\nPlease enter the ID of the dataset you want: ')
-                self.default_dataset = inputted_dataset
-                dataset = inputted_dataset
+            # if self.default_dataset is not None:
+            #     dataset = self.default_dataset
+            #     print('Dataset not specified, using default dataset')
+            # else:
+            self.list_datasets()
+            inputted_dataset = input('Dataset not specified.\nPlease enter the ID of the dataset you want: ')
+            self.default_dataset = inputted_dataset
+            dataset = inputted_dataset
 
         dataset_version_url = self.base_endpoint + '/datasets/' + dataset + '/versions'
         data = {'name': name, 'description': description,
