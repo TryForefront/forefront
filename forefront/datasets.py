@@ -145,7 +145,7 @@ class Datasets:
         Path(tar_dir).mkdir(parents=True, exist_ok=True)
 
     def upload(self, name, description, dataloader: Iterable[Tuple[np.ndarray]],
-                          dataset: Optional[str] = None, upload_batch: Optional[int] = 32):
+                          dataset: Optional[str] = None, upload_batch: Optional[int] = 32, key: Optional[str] = None):
 
         self.reset_deta_folders()
 
@@ -160,10 +160,12 @@ class Datasets:
             dataset = inputted_dataset
 
         dataset_version_url = self.base_endpoint + '/datasets/' + dataset + '/versions'
-        data = {'name': name, 'description': description,
-                'orgId': self.state.get_org_id()}
-        response = requests.post(dataset_version_url, json=data, headers={
-            'Authorization': self.key})
+        if key is not None:
+            data = {'name': name, 'description': description, 'orgId': self.state.get_org_id(), 'key': key}
+        else:
+            data = {'name': name, 'description': description, 'orgId': self.state.get_org_id()}
+
+        response = requests.post(dataset_version_url, json=data, headers={'Authorization': self.key})
 
         dataset_version = response.json()['datasetVersionId']
         paths: List[str] = []
@@ -185,6 +187,8 @@ class Datasets:
         if dataset_version_id is None:
             raise ValueError(
                 'Must include a dataset version ID! Get yours from the dashboard.')
+
+        dataset_version_id = dataset_version_id.replace('version_', '')
 
         def loader():
 
@@ -302,7 +306,7 @@ class Datasets:
                 versions = versions_response.json()
 
                 for version in versions:
-                    if version['_id'] == dataset_version_id:
+                    if version['_id'] == dataset_version_id.replace('version_', ''):
                         return dataset_id
 
         except:
@@ -351,7 +355,7 @@ class Datasets:
             from forefront_pytorch import ForefrontDataset
 
             if not skip_download:
-                self.quick_download_dataset(dataset_version_id)
+                self.quick_download_dataset(dataset_version_id.replace('version_', ''))
 
             return ForefrontDataset
 
