@@ -100,7 +100,7 @@ class Datasets:
         self.key = self.state.get_token()
         self.project_id = self.state.get_project_id()
         self.organization_id = self.state.get_org_id()
-        self.base_endpoint = 'http://localhost:5000/api'#'https://live-server.forefront.link/api'
+        self.base_endpoint = 'https://live-server.forefront.link/api'
         self.tag_endpoint = self.base_endpoint + '/datasets/tags'
 
         self.default_dataset = self.state.get_default_dataset()
