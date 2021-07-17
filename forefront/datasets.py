@@ -78,7 +78,7 @@ def group_tars(paths: List[str], out_path: str) -> str:
     tar_path = out_path#os.path.join(home_path, out_path)
     with tarfile.open(tar_path, 'w|gz') as f:
         for name in paths:
-            filename_without_folder = name.split('/')[-1]
+            filename_without_folder = name.split(os.sep)[-1]
             f.add(name, arcname=filename_without_folder)
 
     return tar_path
@@ -100,7 +100,8 @@ class Datasets:
         self.key = self.state.get_token()
         self.project_id = self.state.get_project_id()
         self.organization_id = self.state.get_org_id()
-        self.base_endpoint = 'https://live-server.forefront.link/api'
+        self.base_endpoint = 'http://localhost:5000/api'#'https://live-server.forefront.link/api'
+        self.tag_endpoint = self.base_endpoint + '/datasets/tags'
 
         self.default_dataset = self.state.get_default_dataset()
 
@@ -145,7 +146,7 @@ class Datasets:
         Path(tar_dir).mkdir(parents=True, exist_ok=True)
 
     def upload(self, name, description, dataloader: Iterable[Tuple[np.ndarray]],
-                          dataset: Optional[str] = None, upload_batch: Optional[int] = 32, key: Optional[str] = None):
+                          dataset: Optional[str] = None, upload_batch: Optional[int] = 32, tag: Optional[str] = None):
 
         self.reset_deta_folders()
 
@@ -160,8 +161,8 @@ class Datasets:
             dataset = inputted_dataset
 
         dataset_version_url = self.base_endpoint + '/datasets/' + dataset + '/versions'
-        if key is not None:
-            data = {'name': name, 'description': description, 'orgId': self.state.get_org_id(), 'key': key}
+        if tag is not None:
+            data = {'name': name, 'description': description, 'orgId': self.state.get_org_id(), 'tag': tag}
         else:
             data = {'name': name, 'description': description, 'orgId': self.state.get_org_id()}
 
@@ -349,13 +350,26 @@ class Datasets:
 
         pbar.close()
 
-    def get_pytorch_dataset(self, dataset_version_id: str = None, skip_download: Optional[bool] = False) -> Any:
+    def get_pytorch_dataset(self, dataset_version_id: Optional[str] = None, skip_download: Optional[bool] = False, tag: Optional[str] = None) -> Any:
 
         try:
             from forefront_pytorch import ForefrontDataset
 
+            if tag is not None:
+                res = requests.post(self.tag_endpoint, json={'tag': tag}, headers={
+                    'Authorization': self.key
+                })
+
+                if res.status_code != 200:
+                    raise ValueError("That tag doesn't seem to exist." +
+                                     " Ensure you include the full tag including the slash.")
+                version_id = res.json()['datasetVersionId']
+
+            else:
+                version_id = dataset_version_id.replace('version_', '')
+
             if not skip_download:
-                self.quick_download_dataset(dataset_version_id.replace('version_', ''))
+                self.quick_download_dataset(version_id)
 
             return ForefrontDataset
 
